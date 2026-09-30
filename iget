@@ -10,175 +10,107 @@ struct Inode
     int dirty;
 
 };
-
 struct Inode table[N];
-
 void display()
-
 {
 
     int i;
-
     printf("\nInode\tRef\tLock\tDirty\n");
-
     for(i = 0; i < N; i++)
 
         printf("%d\t%d\t%d\t%d\n",
-
                table[i].no,
-
                table[i].ref,
-
                table[i].lock,
-
                table[i].dirty);
 
 }
-
 void iget(int n)
-
 {
 
     int i;
-
     for(i = 0; i < N; i++)
 
     {
-
         if(table[i].no == n)
-
         {
-
             if(table[i].lock)
-
             {
-
                 printf("\nInode is locked. Waiting ...\n");
-
                 table[i].lock = 0;
-
             }
-
             table[i].lock = 1;
-
             table[i].ref++;
-
             printf("\niget() : Inode %d obtained.", n);
-
             printf("\nReference count = %d\n",
 
                    table[i].ref);
 
             return;
-
         }
-
     }
 
     printf("\nInode not found.\n");
-
 }
 
 void iput(int n)
-
 {
 
     int i;
 
     for(i = 0; i < N; i++)
-
     {
-
         if(table[i].no == n)
-
         {
-
             if(table[i].ref == 0)
-
             {
-
                 printf("Inode is not in use.\n");
-
                 return;
-
             }
 
             table[i].ref--;
-
             printf("\niput() : reference count = %d\n",
-
                    table[i].ref);
-
             if(table[i].ref == 0)
-
             {
-
                 if(table[i].dirty)
-
                 {
-
                     printf("Writing dirty inode to disk....\n");
-
                     table[i].dirty = 0;
-
                 }
 
                 table[i].lock = 0;
-
                 printf("Inode %d released.\n", n);
-
             }
 
             return;
-
         }
-
     }
-
     printf("Inode not found.\n");
-
 }
 
 int main()
-
 {
 
     int i, choice, n;
-
     /* Initialize inode table */
-
     for(i = 0; i < N; i++)
-
     {
 
         table[i].no = i + 1;
-
-        table[i].ref = 0;
-
+        tabLe[i].ref = 0;
         table[i].lock = 0;
-
         table[i].dirty = 0;
-
     }
-
     while(1)
-
     {
-
         printf("\n\n1. Display");
-
         printf("\n2. iget()");
-
         printf("\n3. iput()");
-
         printf("\n4. Make inode dirty");
-
         printf("\n5. Exit");
-
         printf("\nEnter choice: ");
-
         scanf("%d", &choice);
-
         if(choice == 1)
 
         {
@@ -192,9 +124,7 @@ int main()
         {
 
             printf("Enter inode number: ");
-
             scanf("%d", &n);
-
             iget(n);
 
         }
@@ -204,15 +134,11 @@ int main()
         {
 
             printf("Enter inode number: ");
-
             scanf("%d", &n);
-
             iput(n);
-
         }
 
         else if(choice == 4)
-
         {
 
             printf("Enter inode number: ");
